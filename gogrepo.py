@@ -255,6 +255,7 @@ def refreshCookies():
 	mySession = requests.Session()
 	mySession.headers={'User-Agent':__appname__ + __version__}
 	load_cookies()
+	opener.open(GOG_HOME_URL)
 	mySession.cookies.update(global_cookies)
 	global_cookies.save()
 	return mySession
