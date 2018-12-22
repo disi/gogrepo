@@ -91,6 +91,8 @@ INFO_FILENAME = r'!info.txt'
 global_cookies = cookiejar.LWPCookieJar(COOKIES_FILENAME)
 cookieproc = HTTPCookieProcessor(global_cookies)
 opener = build_opener(cookieproc)
+mySession = requests.Session()
+mySession.headers={'User-Agent':__appname__ + __version__}
 treebuilder = html5lib.treebuilders.getTreeBuilder('etree')
 parser = html5lib.HTMLParser(tree=treebuilder, namespaceHTMLElements=False)
 
@@ -252,12 +254,11 @@ def load_cookies():
     raise SystemExit(1)
 
 def refreshCookies():
-	mySession = requests.Session()
-	mySession.headers={'User-Agent':__appname__ + __version__}
-	load_cookies()
-	mySession.cookies.update(global_cookies)
-	global_cookies.save()
-	return mySession
+    load_cookies()
+    mySession.get(GOG_HOME_URL)
+    mySession.cookies.update(global_cookies)
+    global_cookies.save()
+    return mySession
 
 def load_manifest(filepath=MANIFEST_FILENAME):
     info('loading local manifest...')
