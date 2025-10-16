@@ -539,12 +539,13 @@ def cmd_login(user, passwd):
     info("attempting gog login as '{}' ...".format(login_data['user']))
 
     # fetch the auth url
-    with request(GOG_HOME_URL, delay=0) as page:
+    """ with request(GOG_HOME_URL, delay=0) as page:
         etree = html5lib.parse(page, namespaceHTMLElements=False)
         for elm in etree.findall('.//script'):
             if elm.text is not None and 'GalaxyAccounts' in elm.text:
                 login_data['auth_url'] = elm.text.split("'")[3]
-                break
+                break """
+    login_data['auth_url'] = 'https://login.gog.com/auth?client_id=46755278331571209&response_type=code&redirect_uri=https%3A%2F%2Fwww.gog.com%2Fon_login_success%3FreturnTo%3D%2F'
 
     # fetch the login token
     with request(login_data['auth_url'], delay=0) as page:
